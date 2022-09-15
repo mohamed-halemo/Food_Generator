@@ -74,20 +74,28 @@ class _HomePageState extends State<HomePage> {
 Future<bool> onLikeButtonTapped(bool isLiked,String id) async{
     final prefs = await SharedPreferences.getInstance();
     List<String>? currentList = prefs.getStringList("favourites") ?? [];
+    List<String>? timesList = prefs.getStringList("times") ?? [];
     print(currentList);
     if(!isLiked){
-      currentList.add(id);
+      String time = DateTime.now().millisecondsSinceEpoch.toString();
+      currentList.add("$id;$time");
       await prefs.setStringList("favourites", currentList);
     }
     else{
-      currentList.remove(id);
+      currentList.removeWhere((item) => item.split(';')[0] == id);
       await prefs.setStringList("favourites", currentList);
     }
     return !isLiked;
 }
 void checkLiked() async{
   final prefs = await SharedPreferences.getInstance();
-  List<String>? currentList = prefs.getStringList("favourites");
+  List<String> currentList = prefs.getStringList("favourites") ?? [];
+  if (currentList.isNotEmpty){
+    currentList.removeWhere((item) => DateTime.now().millisecondsSinceEpoch-int.parse(item.split(';')[1]) >= 1000*60*60*24*30);
+    await prefs.setStringList("favourites", currentList);
+  }
+  else{
+    await prefs.setStringList("favourites", []);
+  }
   print(currentList);
-  // await prefs.setStringList("favourites", []);
 }

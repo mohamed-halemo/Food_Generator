@@ -16,10 +16,12 @@ class MealsRepository {
     // print(1);
     try{
       var currentList = prefs.getStringList("favourites") ?? [];
+      var randNo;
       var element;
-      if (currentList.length != 0){
+      if (currentList.length > 5){
         final _random = Random();
-        element = currentList[_random.nextInt(currentList.length)];
+        randNo = currentList[_random.nextInt(currentList.length)];
+        element = randNo.split(';')[0];
       }
       else{
         element = Random().nextInt(320);
