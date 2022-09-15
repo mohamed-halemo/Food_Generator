@@ -20,6 +20,7 @@ class MealsBloc extends Bloc<MealsEvent, MealsState> {
     emit(MealsLoadingState());
     try {
       final meals = await _mealsRepository.fetchMeals();
+      print(meals);
       emit(MealsLoadedState(meals: meals));
     } catch (e) {
       print(e);
