@@ -23,43 +23,78 @@ class _HomePageState extends State<HomePage> {
           builder: (context, state) {
               checkLiked();
             if (state is MealsLoadedState){
-            return Column(children: [
-        Expanded(
-          child: ImageHelper(
-            imageType: ImageType.network,
-            imageShape: ImageShape.rectangle,
-            width: MediaQuery.of(context).size.width-300,
-            height: MediaQuery.of(context).size.height-300,
-            boxFit: BoxFit.fill,
-            // scale: 1.0,
-            // imagePath: 'assets/images/image.png',
-            image: state.meals.image,
-            defaultLoaderColor: Colors.red,
-            defaultErrorBuilderColor: Colors.blueGrey,
-          ),
-        ),
-        Row(
-          children: [
-            Text(
-              state.meals.name,
-              style: TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.w500, // light
-              ),
-            ),
-            TextButton(child: Text('Retry',style: TextStyle(
+      //       return Column(children: [
+      //   Expanded(
+      //     child: ImageHelper(
+      //       imageType: ImageType.network,
+      //       imageShape: ImageShape.rectangle,
+      //       width: MediaQuery.of(context).size.width-300,
+      //       height: MediaQuery.of(context).size.height-300,
+      //       boxFit: BoxFit.fill,
+      //       // scale: 1.0,
+      //       // imagePath: 'assets/images/image.png',
+      //       image: state.meals.image,
+      //       defaultLoaderColor: Colors.red,
+      //       defaultErrorBuilderColor: Colors.blueGrey,
+      //     ),
+      //   ),
+      //   Row(
+      //     children: [
+      //       Text(
+      //         state.meals.name,
+      //         style: TextStyle(
+      //           fontSize: 10,
+      //           fontWeight: FontWeight.w500, // light
+      //         ),
+      //       ),
+      //       TextButton(child: Text('Retry',style: TextStyle(
+      //           fontSize: 22,
+      //           fontWeight: FontWeight.w500, // light
+      //         ),),onPressed: () => {context.read<MealsBloc>().add(LoadMealsEvent()),},),
+      //       LikeButton(
+      //         size: 30,isLiked: state.meals.liked,
+      //          onTap: (isLiked) {
+      //               return onLikeButtonTapped(isLiked,state.meals.id);
+      //             },
+      //       ),
+      //     ],
+      //   )
+      // ]);
+      return Card(
+       elevation: 4.0,
+       child: Column(
+         children: [
+           Container(
+             padding: EdgeInsets.all(16.0),
+             height: 400.0,
+             child: Ink.image(
+               image: NetworkImage(state.meals.image),
+               fit: BoxFit.cover,
+             ),
+           ),
+           Container(
+             padding: EdgeInsets.all(16.0),
+             alignment: Alignment.centerLeft,
+             child: Text(state.meals.name,style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.w500, // light
-              ),),onPressed: () => {context.read<MealsBloc>().add(LoadMealsEvent()),},),
-            LikeButton(
-              size: 30,isLiked: state.meals.liked,
-               onTap: (isLiked) {
-                    return onLikeButtonTapped(isLiked,state.meals.id);
-                  },
-            ),
-          ],
-        )
-      ]);
+              ),),
+           ),
+           ButtonBar(
+             children: [
+               LikeButton(
+                  size: 30,isLiked: state.meals.liked,
+                  onTap: (isLiked) {
+                        return onLikeButtonTapped(isLiked,state.meals.id);
+                      },
+                ),
+               TextButton(
+                 child: const Text('Retry'),
+                 onPressed: () => {context.read<MealsBloc>().add(LoadMealsEvent()),},),
+             ],
+           )
+         ],
+       ));
       }else if(state is MealsLoadErrorState){
         // context.read<MealsBloc>().add(LoadMealsEvent());
         return Center(child: Text('Error...'),);
