@@ -2,6 +2,7 @@ import "dart:math";
 import 'package:flutter/foundation.dart';
 import 'package:myapp/models/meal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:collection/collection.dart';
 
 import '../services/services.dart';
 
@@ -28,7 +29,11 @@ class MealsRepository {
       }
       final MealModel meals = await mealsService.getMeals(element.toString());
       List<String>? cList = prefs.getStringList("favourites");
-      meals.liked = cList?.contains(meals.id);
+      if(cList?.firstWhereOrNull((item) => item.split(';')[0] == meals.id) != null){
+        meals.liked = true;
+      }else{
+        meals.liked = false;
+      }
       return meals;
     } catch (e) {
       throw Exception(e.toString());

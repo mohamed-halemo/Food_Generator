@@ -11,6 +11,7 @@ class MealsService {
     final cookie = await http.get(url);
     var document = parse(cookie.body);
     List<String> cookieValue = document.getElementsByTagName('script')[0].innerHtml.split(';');
+    print(cookieValue);
     String cookieRequest = cookieValue[0].substring(17);
     final response = await http.get(url,headers: {'Cookie': cookieRequest});
     if (response.statusCode == 200) {
