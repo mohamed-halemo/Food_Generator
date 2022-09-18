@@ -14,7 +14,6 @@ class MealsRepository {
 
   Future<MealModel> fetchMeals() async {
     final prefs = await SharedPreferences.getInstance();
-    // print(1);
     try{
       var currentList = prefs.getStringList("favourites") ?? [];
       var randNo;

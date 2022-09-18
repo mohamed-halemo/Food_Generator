@@ -57,18 +57,6 @@ class StarterScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              // GestureDetector(
-              //   onTap: () => Navigator.pushNamed(context, 'Start'),
-              //   child: Container(
-              //     child: Text(
-              //       'Start',
-              //       style: kBodyText,
-              //     ),
-              //     decoration: BoxDecoration(
-              //         border:
-              //             Border(bottom: BorderSide(width: 1, color: Colors.pink))),
-              //   ),
-              // ),
               SizedBox(
                 height: 20,
               ),

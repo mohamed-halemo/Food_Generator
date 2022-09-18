@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
-import 'package:image_loader/image_helper.dart';
-import 'package:myapp/repository/repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:myapp/blocs/blocs.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,106 +20,166 @@ class _HomePageState extends State<HomePage> {
         body: BlocBuilder<MealsBloc, MealsState>(builder: (context, state) {
       checkLiked();
       if (state is MealsLoadedState) {
-        //       return Column(children: [
-        //   Expanded(
-        //     child: ImageHelper(
-        //       imageType: ImageType.network,
-        //       imageShape: ImageShape.rectangle,
-        //       width: MediaQuery.of(context).size.width-300,
-        //       height: MediaQuery.of(context).size.height-300,
-        //       boxFit: BoxFit.fill,
-        //       // scale: 1.0,
-        //       // imagePath: 'assets/images/image.png',
-        //       image: state.meals.image,
-        //       defaultLoaderColor: Colors.red,
-        //       defaultErrorBuilderColor: Colors.blueGrey,
-        //     ),
-        //   ),
-        //   Row(
-        //     children: [
-        //       Text(
-        //         state.meals.name,
-        //         style: TextStyle(
-        //           fontSize: 10,
-        //           fontWeight: FontWeight.w500, // light
-        //         ),
-        //       ),
-        //       TextButton(child: Text('Retry',style: TextStyle(
-        //           fontSize: 22,
-        //           fontWeight: FontWeight.w500, // light
-        //         ),),onPressed: () => {context.read<MealsBloc>().add(LoadMealsEvent()),},),
-        //       LikeButton(
-        //         size: 30,isLiked: state.meals.liked,
-        //          onTap: (isLiked) {
-        //               return onLikeButtonTapped(isLiked,state.meals.id);
-        //             },
-        //       ),
-        //     ],
-        //   )
-        // ]);
-        return Card(
-            elevation: 4.0,
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(16.0),
-                  height: 400.0,
-                  child: Ink.image(
-                    image: NetworkImage(state.meals.image),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(16.0),
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    state.meals.name,
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w500, // light
+        return Scaffold(
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(20),
+                    color: Color(0xffFBCEDC),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            //LikeButton
+                            LikeButton(
+                              size: 30,
+                              isLiked: state.meals.liked,
+                              likeBuilder: (bool isLiked) {
+                                return Icon(
+                                  Icons.favorite,
+                                  color: isLiked
+                                      ? Color(0xffFF5F99)
+                                      : Colors.white,
+                                  size: 30,
+                                );
+                              },
+                              onTap: (isLiked) {
+                                return onLikeButtonTapped(
+                                    isLiked, state.meals.id);
+                              },
+                            ),
+                          ],
+                        ),
+                        Image.network(
+                          state.meals.image,
+                          width: 400,
+                          height: 500,
+                          fit:BoxFit.cover,
+                        ),
+                      ],
                     ),
                   ),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(30),
+                          topLeft: Radius.circular(30)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          state.meals.name,
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w600,
+                            fontSize: 19,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 25, bottom: 25),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Color(0xffFF5F99),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 7,
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          bottomNavigationBar: Container(
+            padding: EdgeInsets.all(20),
+            child: ElevatedButton(
+              onPressed: () => {
+                context.read<MealsBloc>().add(LoadMealsEvent()),
+              },
+              child: Icon(
+                Icons.refresh_rounded,
+                size: 45,
+              ),
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xffFF5F99),
+                padding: EdgeInsets.all(25),
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(30),
+                  ),
                 ),
-                ButtonBar(
-                  children: [
-                    LikeButton(
-                      size: 30,
-                      isLiked: state.meals.liked,
-                      onTap: (isLiked) {
-                        return onLikeButtonTapped(isLiked, state.meals.id);
-                      },
-                    ),
-                    TextButton(
-                      child: const Text('Retry'),
-                      onPressed: () => {
-                        context.read<MealsBloc>().add(LoadMealsEvent()),
-                      },
-                    ),
-                  ],
-                )
-              ],
-            ));
+                textStyle: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 25,
+                ),
+              ),
+            ),
+          ),
+        );
       } else if (state is MealsLoadErrorState) {
         // context.read<MealsBloc>().add(LoadMealsEvent());
-        return Center(
-            child: Column(children: [
+        return Scaffold(
+            body: SafeArea(
+          child: Center(child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
           Container(
-            padding: EdgeInsets.all(16.0),
-            child: Text('Error...'),
+            // padding: EdgeInsets.all(16.0),
+            child: Text(
+              'Error...',
+              style: TextStyle(
+                fontFamily: 'Poppins',
+                fontSize: 17,
+                color: Color(0xffFF5F99),
+              ),
+            ),
           ),
           Container(
-            padding: EdgeInsets.all(16.0),
+            // padding: EdgeInsets.all(16.0),
             child: TextButton(
-              child: const Text('Retry'),
+              child: Icon(
+                Icons.refresh_rounded,
+                color: Color(0xffFF5F99),
+                size: 30,
+              ),
               onPressed: () => {
                 context.read<MealsBloc>().add(LoadMealsEvent()),
               },
             ),
           ),
-        ]));
+        ]))));
       } else {
-        return Center(
-          child: Text('Loading...'),
+        return const Center(
+          child: SizedBox(
+            width: 50,
+            height: 50,
+            child: CircularProgressIndicator(
+              color: Color(0xffFF5F99),
+            ),
+          ),
         );
       }
     }));
@@ -131,8 +189,6 @@ class _HomePageState extends State<HomePage> {
 Future<bool> onLikeButtonTapped(bool isLiked, String id) async {
   final prefs = await SharedPreferences.getInstance();
   List<String>? currentList = prefs.getStringList("favourites") ?? [];
-  List<String>? timesList = prefs.getStringList("times") ?? [];
-  print(currentList);
   if (!isLiked) {
     String time = DateTime.now().millisecondsSinceEpoch.toString();
     currentList.add("$id;$time");
@@ -155,5 +211,4 @@ void checkLiked() async {
   } else {
     await prefs.setStringList("favourites", []);
   }
-  print(currentList);
 }
