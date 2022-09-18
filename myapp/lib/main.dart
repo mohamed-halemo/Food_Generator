@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myapp/blocs/meals/meals_bloc.dart';
 import 'package:myapp/repository/repository.dart';
 import 'package:myapp/screens/Home_screen.dart';
+import 'package:myapp/screens/Start_screen.dart';
 import 'package:myapp/services/services.dart';
 import 'home_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: const HomePage(),
+          home:  StarterScreen(),
         ),
       ),
     );
