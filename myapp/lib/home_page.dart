@@ -186,7 +186,7 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Future<bool> onLikeButtonTapped(bool isLiked, String id) async {
+Future<bool> onLikeButtonTapped(bool isLiked, String? id) async {
   final prefs = await SharedPreferences.getInstance();
   List<String>? currentList = prefs.getStringList("favourites") ?? [];
   if (!isLiked) {

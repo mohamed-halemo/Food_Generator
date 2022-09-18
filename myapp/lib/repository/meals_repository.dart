@@ -13,7 +13,10 @@ class MealsRepository {
   });
 
   Future<MealModel> fetchMeals() async {
+    var url = Uri.parse('http://foodrecommender.rf.gd/public/api/recommender/len');
     final prefs = await SharedPreferences.getInstance();
+    var count = new CountService();
+    List counts = await count.getCount();
     try{
       var currentList = prefs.getStringList("favourites") ?? [];
       var randNo;
@@ -24,9 +27,9 @@ class MealsRepository {
         element = randNo.split(';')[0];
       }
       else{
-        element = Random().nextInt(320);
+        element = Random().nextInt(counts[0]);
       }
-      final MealModel meals = await mealsService.getMeals(element.toString());
+      final MealModel meals = await mealsService.getMeals(element.toString(),counts[1]);
       List<String>? cList = prefs.getStringList("favourites");
       if(cList?.firstWhereOrNull((item) => item.split(';')[0] == meals.id) != null){
         meals.liked = true;

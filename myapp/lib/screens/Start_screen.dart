@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:myapp/home_page.dart';
+import 'package:myapp/screens/Add.dart';
 import '../pallete.dart';
 import '../widgets.dart';
 import 'BackGround_Image.dart';
+
+
 
 class StarterScreen extends StatelessWidget {
   @override
@@ -32,7 +35,21 @@ class StarterScreen extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  
+                    ElevatedButton(
+                    
+          child: const Text(' Add your food Now!'),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Add()));},
+              style: ElevatedButton.styleFrom(
+                primary: Colors.pinkAccent,
+                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                textStyle: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold)
+              ),
+              ) ,
                  
                   SizedBox(
                     height: 25,

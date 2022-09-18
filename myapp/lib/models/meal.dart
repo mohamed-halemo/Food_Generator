@@ -1,13 +1,15 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 
 class MealModel extends Equatable {
-  final String id;
+  String? id;
   final String categories;
-  final String name;
+  String name;
   final String image;
   bool? liked;
   MealModel({
-    required this.id,
+    this.id,
     required this.categories,
     required this.name,
     required this.image,
@@ -34,7 +36,8 @@ class MealModel extends Equatable {
         name: json['name'] as String,
         image: json['image'] as String,
       );
-
+    Map<String,dynamic> toJson() => {"categories": categories , "name": name, "image": image};
+    
   @override
   List<Object?> get props => [
         id,
